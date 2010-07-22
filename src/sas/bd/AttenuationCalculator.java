@@ -19,13 +19,21 @@ public class AttenuationCalculator extends Activity {
 
 	// Member Variables
 	protected EditText _abvInput;
+	protected EditText _abwInput;
+	protected EditText _apparentAttenuationInput;
+	protected EditText _realAttenuationInput;
+	protected EditText _realExtractInput;
+	protected EditText _realExtractBrixInput;
+
 	protected EditText _ogInput;
 	protected EditText _fgInput;
 	protected EditText _ogBrixInput;
 	protected EditText _fgBrixInput;
 	protected DecimalFormat _formatter;
-	protected SGInputWatcher _sgWatcher;
-	protected BrixInputWatcher _brixWatcher;
+	protected OGInputWatcher _ogWatcher;
+	protected OGBrixInputWatcher _ogBrixWatcher;
+	protected FGInputWatcher _fgWatcher;
+	protected FGBrixInputWatcher _fgBrixWatcher;
 
     /** 
 	 * Called when the activity is first created. 
@@ -45,39 +53,78 @@ public class AttenuationCalculator extends Activity {
 	 */
 	private void initializeWidgets() {
 
-		_sgWatcher = new SGInputWatcher();
-		_brixWatcher = new BrixInputWatcher();
-
 		// pre-defined widgets
 		_ogInput = (EditText)findViewById(R.id.og);
 		_ogInput.setSingleLine();
+
 		_fgInput = (EditText)findViewById(R.id.fg);
 		_fgInput.setSingleLine();
+
 		_ogBrixInput = (EditText)findViewById(R.id.ogBrix);
 		_ogBrixInput.setSingleLine();
+
 		_fgBrixInput = (EditText)findViewById(R.id.fgBrix);
 		_fgBrixInput.setSingleLine();
+
 		_abvInput = (EditText)findViewById(R.id.abv);
 		_abvInput.setEnabled( false );
+		_abvInput.setSingleLine();
 
-		_ogInput.addTextChangedListener( _sgWatcher );
-		_fgInput.addTextChangedListener( _sgWatcher );
-		_ogBrixInput.addTextChangedListener( _brixWatcher );
-		_fgBrixInput.addTextChangedListener( _brixWatcher );
+		_abwInput = (EditText)findViewById(R.id.abw);
+		_abwInput.setEnabled( false );
+		_abwInput.setSingleLine();
+
+		_apparentAttenuationInput = (EditText)findViewById(R.id.apparent_attenuation);
+		_apparentAttenuationInput.setEnabled( false );
+		_apparentAttenuationInput.setSingleLine();
+
+		_realAttenuationInput = (EditText)findViewById(R.id.real_attenuation);
+		_realAttenuationInput.setEnabled( false );
+		_realAttenuationInput.setSingleLine();
+
+		_realExtractInput = (EditText)findViewById(R.id.extract_sg);
+		_realExtractInput.setEnabled( false );
+		_realExtractInput.setSingleLine();
+
+		_realExtractBrixInput = (EditText)findViewById(R.id.extract_brix);
+		_realExtractBrixInput.setEnabled( false );
+		_realExtractBrixInput.setSingleLine();
+
+		// set up listeners
+		_ogWatcher = new OGInputWatcher();
+		_ogBrixWatcher = new OGBrixInputWatcher(); 
+		_fgWatcher = new FGInputWatcher(); 
+		_fgBrixWatcher = new FGBrixInputWatcher(); 
+
+		_ogInput.addTextChangedListener( _ogWatcher );
+		_fgInput.addTextChangedListener( _fgWatcher );
+		_ogBrixInput.addTextChangedListener( _ogBrixWatcher );
+		_fgBrixInput.addTextChangedListener( _fgBrixWatcher );
 
 	}
 
 	/**
 	 * Updates output.
 	 */
-	protected void update() {
+	protected void updateOutputs() {
 		try {
 			double og = Double.parseDouble( _ogInput.getText().toString() );
 			double fg = Double.parseDouble( _fgInput.getText().toString() );
 
 			double abv = BrewMath.calculateABV( og, fg );
+			double abw = BrewMath.calculateABW( og, fg );
+			double apparentAttenuation = BrewMath.calculateApparentAttenuation( og, fg ) * 100;
+			double realAttenuation = BrewMath.calculateRealExtractPercent( og, fg ) * 100;
+			double extractSG = BrewMath.calculateRealExtract( og, fg );
+			double extractBrix = BrewMath.convertSGtoPlato( extractSG );
 
 			_abvInput.setText( ""+ _formatter.format(abv) + "%" );
+			_abwInput.setText( ""+ _formatter.format(abw) + "%" );
+			_apparentAttenuationInput.setText( ""+ _formatter.format(apparentAttenuation) + "%" );
+			_realAttenuationInput.setText( ""+ _formatter.format(realAttenuation) + "%" );
+			_realExtractInput.setText( ""+ _formatter.format(extractSG) );
+			_realExtractBrixInput.setText( ""+ _formatter.format(extractBrix) );
+
 		} catch ( Exception e ) {
 			// e.printStackTrace();
 			_abvInput.setText( "[Invalid Input]" );
@@ -85,32 +132,45 @@ public class AttenuationCalculator extends Activity {
 	}
 
 	/**
-	 * Updates sg fields.
+	 * Processes the og field.
 	 */
-	protected synchronized void updateSG() {
+	protected synchronized void processOG() {
 		try {
+
 			double og = Double.parseDouble( _ogInput.getText().toString() );
-			double fg = Double.parseDouble( _fgInput.getText().toString() );
-
 			double ogBrix = BrewMath.convertSGtoPlato( og );
-			double fgBrix = BrewMath.convertSGtoPlato( fg );
-
 			String ogBrixText = _formatter.format( ogBrix );
+
+			// update brix field
+			_ogBrixWatcher.setEnabled( false );
+			_ogBrixInput.setTextKeepState( ogBrixText );
+			_ogBrixWatcher.setEnabled( true );
+
+			updateOutputs();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			_abvInput.setText( "[Invalid Input]" );
+		}
+	}
+
+	/**
+	 * Processes the fg field.
+	 */
+	protected synchronized void processFG() {
+		try {
+
+			double fg = Double.parseDouble( _fgInput.getText().toString() );
+			double fgBrix = BrewMath.convertSGtoPlato( fg );
 			String fgBrixText = _formatter.format( fgBrix );
 
-			_brixWatcher.setEnabled( false );
+			// update brix field
+			_fgBrixWatcher.setEnabled( false );
+			_fgBrixInput.setTextKeepState( fgBrixText );
+			_fgBrixWatcher.setEnabled( true );
 
-			if ( ! ogBrixText.equals( _ogBrixInput.getText().toString() )) {
-				_ogBrixInput.setText( ogBrixText );
-			}
+			updateOutputs();
 
-			if ( ! fgBrixText.equals( _fgBrixInput.getText().toString() )) {
-				_fgBrixInput.setText( fgBrixText );
-			}
-
-			_brixWatcher.setEnabled( true );
-
-			update();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			_abvInput.setText( "[Invalid Input]" );
@@ -118,32 +178,22 @@ public class AttenuationCalculator extends Activity {
 	}
 
 	/**
-	 * Updates Brix fields.
+	 * Processes the og brix field.
 	 */
-	protected synchronized void updateBrix() {
+	protected synchronized void processOGBrix() {
 		try {
+
 			double ogBrix = Double.parseDouble( _ogBrixInput.getText().toString() );
-			double fgBrix = Double.parseDouble( _fgBrixInput.getText().toString() );
-
 			double og = BrewMath.convertPlatoToSG( ogBrix );
-			double fg = BrewMath.convertPlatoToSG( fgBrix );
+			String ogText = _formatter.format( og );
 
-			String ogString = _formatter.format( og );
-			String fgString = _formatter.format( fg );
+			// update og field
+			_ogWatcher.setEnabled( false );
+			_ogInput.setTextKeepState( ogText );
+			_ogWatcher.setEnabled( true );
 
-			_sgWatcher.setEnabled( false );
+			updateOutputs();
 
-			if ( ! ogString.equals( _ogInput.getText().toString() )) {
-				_ogInput.setText( ogString );
-			}
-
-			if ( ! fgString.equals( _fgInput.getText().toString() )) {
-				_fgInput.setText( fgString );
-			}
-
-			_sgWatcher.setEnabled( true );
-
-			update();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 			_abvInput.setText( "[Invalid Input]" );
@@ -151,19 +201,47 @@ public class AttenuationCalculator extends Activity {
 	}
 
 	/**
-	 * Listens to changes to SG fields and updates other fields.
+	 * Processes the fg brix field.
 	 */
-	private class SGInputWatcher implements TextWatcher {
+	protected synchronized void processFGBrix() {
+		try {
+
+			double fgBrix = Double.parseDouble( _fgBrixInput.getText().toString() );
+			double fg = BrewMath.convertPlatoToSG( fgBrix );
+			String fgText = _formatter.format( fg );
+
+			// update fg field
+			_fgWatcher.setEnabled( false );
+			_fgInput.setTextKeepState( fgText );
+			_fgWatcher.setEnabled( true );
+
+			updateOutputs();
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			_abvInput.setText( "[Invalid Input]" );
+		}
+	}
+
+	/**
+	 * BaseWatcher 
+	 */
+	private abstract class BaseWatcher implements TextWatcher {
 
 		// Member Variables
 		protected boolean _enabled = true;
+
+		/**
+		 * Called on change
+		 */
+		public abstract void onChange( Editable s );
 
 		/**
 		 * Called after text has changed.
 		 */
 		public void afterTextChanged( Editable s ) {
 			if ( _enabled ) {
-				updateSG();
+				onChange( s );
 			}
 		}
 
@@ -188,39 +266,54 @@ public class AttenuationCalculator extends Activity {
 	}
 
 	/**
-	 * Listens to changes to brix inputs and updates other fields.
+	 * Listens to changes to the OG field
 	 */
-	private class BrixInputWatcher implements TextWatcher {
-
-		// Member Variables
-		protected boolean _enabled = true;
+	private class OGInputWatcher extends BaseWatcher {
 
 		/**
 		 * Called after text has changed.
 		 */
-		public void afterTextChanged( Editable s ) {
-			if ( _enabled ) {
-				updateBrix();
-			}
+		public void onChange( Editable s ) {
+			processOG();
 		}
+	}
+
+	/**
+	 * Listens to changes to the OG brix field
+	 */
+	private class OGBrixInputWatcher extends BaseWatcher {
 
 		/**
-		 * Called before text changed
+		 * Called after text has changed.
 		 */
-		public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
+		public void onChange( Editable s ) {
+			processOGBrix();
 		}
+	}
+
+	/**
+	 * Listens to changes to the FG field
+	 */
+	private class FGInputWatcher extends BaseWatcher {
 
 		/**
-		 * Called as text is changed
+		 * Called after text has changed.
 		 */
-		public void onTextChanged( CharSequence s, int start, int before, int count ) {
+		public void onChange( Editable s ) {
+			processFG();
 		}
+	}
+
+	/**
+	 * Listens to changes to the FG brix field
+	 */
+	private class FGBrixInputWatcher extends BaseWatcher {
 
 		/**
-		 * Sets whether this listener is enabled
+		 * Called after text has changed.
 		 */
-		public void setEnabled( boolean enabled ) {
-			_enabled = enabled;
+		public void onChange( Editable s ) {
+			processFGBrix();
 		}
 	}
 }

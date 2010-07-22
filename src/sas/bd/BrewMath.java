@@ -23,6 +23,34 @@ public class BrewMath {
 	}
 
 	/**
+	 * Calculate ABW given OG and SG
+	 */
+	public static double calculateABW( double og, double sg ) {
+		return 76.08d * (og - sg) / (1.775 - og);
+	}
+
+	/**
+	 * Calculate apparent attenuation
+	 */
+	public static double calculateApparentAttenuation( double og, double sg ) {
+		return 1 - (sg-1)/(og-1);
+	}
+
+	/**
+	 * Calculate the real extract, as a value between 0 and 1
+	 */
+	public static double calculateRealExtractPercent( double og, double sg ) {
+		return 1 - ((0.1808d * (1-og)) + (0.8192d * (1-sg))) / (1-og);
+	}
+
+	/**
+	 * Calculate in terms of SG the real extract
+	 */
+	public static double calculateRealExtract( double og, double sg ) {
+		return ((0.1808 * og) + (0.8192 * sg));
+	}
+
+	/**
 	 * Convert plato to SG
 	 *
 	 * @param brix

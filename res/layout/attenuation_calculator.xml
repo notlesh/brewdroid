@@ -3,6 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
+	
+	<!-- og -->
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
@@ -30,8 +32,9 @@
 		android:layout_marginTop="10dip"
 		android:layout_marginLeft="165dip"
 		android:layout_width="75dip"
-		android:text="12.3"/>
+		android:text="12.33"/>
 
+	<!-- fg -->
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
@@ -59,22 +62,81 @@
 		android:layout_marginTop="62dip"
 		android:layout_marginLeft="165dip"
 		android:layout_width="75dip"
-		android:text="2.5"/>
+		android:text="2.56"/>
 
+	<!-- alcohol -->
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:layout_marginBottom="35dip"
+		android:layout_marginBottom="235dip"
 		android:layout_marginLeft="6dip"
 		android:layout_alignParentBottom="true"
-		android:text="A.B.V.:"/>
+		android:text="Alcohol by Volume/Weight:"/>
 	<EditText
 		android:id="@+id/abv"
-		android:layout_width="200dip"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="20dip"
-		android:layout_centerInParent="true"
+		android:layout_width="80dip"
+		android:layout_marginBottom="180dip"
+		android:layout_marginLeft="42dip"
 		android:layout_alignParentBottom="true"
 		android:text="5.16%"/>
+	<EditText
+		android:id="@+id/abw"
+		android:layout_height="wrap_content"
+		android:layout_width="80dip"
+		android:layout_marginBottom="180dip"
+		android:layout_marginLeft="165dip"
+		android:layout_alignParentBottom="true"
+		android:text="4.12%"/>
+
+	<!-- attenuation -->
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginBottom="155dip"
+		android:layout_marginLeft="6dip"
+		android:layout_alignParentBottom="true"
+		android:text="Attenuation Apparent/Real:"/>
+	<EditText
+		android:id="@+id/apparent_attenuation"
+		android:layout_height="wrap_content"
+		android:layout_width="80dip"
+		android:layout_marginBottom="100dip"
+		android:layout_marginLeft="42dip"
+		android:layout_alignParentBottom="true"
+		android:text="79.33%"/>
+	<EditText
+		android:id="@+id/real_attenuation"
+		android:layout_height="wrap_content"
+		android:layout_width="80dip"
+		android:layout_marginBottom="100dip"
+		android:layout_marginLeft="165dip"
+		android:layout_alignParentBottom="true"
+		android:text="65.87%"/>
+
+	<!-- real extract -->
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginBottom="75dip"
+		android:layout_marginLeft="6dip"
+		android:layout_alignParentBottom="true"
+		android:text="Real Extract SG/Plato:"/>
+	<EditText
+		android:id="@+id/extract_sg"
+		android:layout_height="wrap_content"
+		android:layout_width="80dip"
+		android:layout_marginBottom="20dip"
+		android:layout_marginLeft="42dip"
+		android:layout_alignParentBottom="true"
+		android:text="1.017"/>
+	<EditText
+		android:id="@+id/extract_brix"
+		android:layout_height="wrap_content"
+		android:layout_width="80dip"
+		android:layout_marginBottom="20dip"
+		android:layout_marginLeft="165dip"
+		android:layout_alignParentBottom="true"
+		android:text="4.387"/>
 
 </RelativeLayout>
