@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+	
+	<!-- og -->
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginTop="5dip"
+		android:layout_gravity="center_vertical"
+		android:text="Hydrometers should be calibrated to 60 Defrees F, or about 15.5 Degrees C."/>
+		
+	<TextView
+		android:id="@+id/sg_reading_label"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginTop="57dip"
+		android:layout_marginLeft="6dip"
+		android:text="Reading (SG/Plato):"/>
+	<EditText
+		android:id="@+id/sg_reading"
+		android:singleLine="true"
+		android:inputType="numberDecimal"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="47dip"
+		android:layout_marginLeft="152dip"
+		android:layout_width="75dip"
+		android:text="1.050"/>
+	<EditText
+		android:id="@+id/brix_reading"
+		android:singleLine="true"
+		android:inputType="numberDecimal"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@+id/sg_reading"
+		android:layout_marginLeft="237dip"
+		android:layout_width="75dip"
+		android:text="12.39"/>
+		
+	<TextView
+		android:id="@+id/temp_reading_label"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginTop="117dip"
+		android:layout_alignLeft="@+id/sg_reading_label"
+		android:text="Temperature (C/F)"/>
+	<EditText
+		android:id="@+id/temp_reading_f"
+		android:singleLine="true"
+		android:inputType="numberDecimal"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="107dip"
+		android:layout_alignLeft="@+id/sg_reading"
+		android:layout_width="75dip"
+		android:text="60.0"/>
+	<EditText
+		android:id="@+id/temp_reading_c"
+		android:singleLine="true"
+		android:inputType="numberDecimal"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@+id/temp_reading_f"
+		android:layout_alignLeft="@+id/brix_reading"
+		android:layout_width="75dip"
+		android:text="15.5"/>
+		
+	<TextView
+		android:id="@+id/corrected_label"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_marginTop="177dip"
+		android:layout_alignLeft="@+id/sg_reading_label"
+		android:text="Corrected SG (/Plato)"/>
+	<EditText
+		android:id="@+id/corrected_sg"
+		android:enabled="false"
+		android:singleLine="true"
+		android:inputType="numberDecimal"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="167dip"
+		android:layout_alignLeft="@+id/sg_reading"
+		android:layout_width="75dip"
+		android:text="1.05"/>
+	<EditText
+		android:id="@+id/corrected_brix"
+		android:enabled="false"
+		android:singleLine="true"
+		android:inputType="numberDecimal"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@+id/corrected_sg"
+		android:layout_alignLeft="@+id/brix_reading"
+		android:layout_width="75dip"
+		android:text="12.39"/>
+
+</RelativeLayout>
