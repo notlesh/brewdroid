@@ -29,10 +29,10 @@ public class AttenuationCalculator extends Activity {
 	protected EditText _fgInput;
 	protected EditText _ogBrixInput;
 	protected EditText _fgBrixInput;
-	protected OGInputWatcher _ogWatcher;
-	protected OGBrixInputWatcher _ogBrixWatcher;
-	protected FGInputWatcher _fgWatcher;
-	protected FGBrixInputWatcher _fgBrixWatcher;
+	protected RelatedFieldWatcher _ogWatcher;
+	protected RelatedFieldWatcher _ogBrixWatcher;
+	protected RelatedFieldWatcher _fgWatcher;
+	protected RelatedFieldWatcher _fgBrixWatcher;
 
     /** 
 	 * Called when the activity is first created. 
@@ -63,10 +63,32 @@ public class AttenuationCalculator extends Activity {
 		_realExtractBrixInput = (EditText)findViewById(R.id.extract_brix);
 
 		// set up listeners
-		_ogWatcher = new OGInputWatcher();
-		_ogBrixWatcher = new OGBrixInputWatcher(); 
-		_fgWatcher = new FGInputWatcher(); 
-		_fgBrixWatcher = new FGBrixInputWatcher(); 
+		_ogWatcher = new BrixFromSGWatcher( _ogBrixInput ) {
+			public void postProcess( String input ) {
+				updateOutputs();
+			}
+		};
+		_ogBrixWatcher = new SGFromBrixWatcher( _ogInput ) {
+			public void postProcess( String input ) {
+				updateOutputs();
+			}
+		}; 
+		_fgWatcher = new BrixFromSGWatcher( _fgBrixInput ) {
+			public void postProcess( String input ) {
+				updateOutputs();
+			}
+		}; 
+		_fgBrixWatcher = new SGFromBrixWatcher( _fgInput ) {
+			public void postProcess( String input ) {
+				updateOutputs();
+			}
+		}; 
+
+		// tell listeners about each other
+		_ogWatcher.addConflictingWatcher( _ogBrixWatcher );
+		_ogBrixWatcher.addConflictingWatcher( _ogWatcher );
+		_fgWatcher.addConflictingWatcher( _fgBrixWatcher );
+		_fgBrixWatcher.addConflictingWatcher( _fgWatcher );
 
 		_ogInput.addTextChangedListener( _ogWatcher );
 		_fgInput.addTextChangedListener( _fgWatcher );
@@ -99,197 +121,11 @@ public class AttenuationCalculator extends Activity {
 			_realExtractInput.setText( 
 					""+ BrewConstants.SG_FORMATTER.format(extractSG) );
 			_realExtractBrixInput.setText( 
-					""+ BrewConstants.NUMBER_FORMATTER.format(extractBrix) );
+					""+ BrewConstants.BRIX_FORMATTER.format(extractBrix) );
 
 		} catch ( Exception e ) {
 			// e.printStackTrace();
 			_abvInput.setText( "[Invalid Input]" );
-		}
-	}
-
-	/**
-	 * Processes the og field.
-	 */
-	protected synchronized void processOG() {
-		try {
-
-			double og = Double.parseDouble( _ogInput.getText().toString() );
-			double ogBrix = BrewMath.convertSGtoPlato( og );
-			String ogBrixText = BrewConstants.NUMBER_FORMATTER.format( ogBrix );
-
-			// update brix field
-			_ogBrixWatcher.setEnabled( false );
-			_ogBrixInput.setTextKeepState( ogBrixText );
-			_ogBrixWatcher.setEnabled( true );
-
-			updateOutputs();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			_abvInput.setText( "[Invalid Input]" );
-		}
-	}
-
-	/**
-	 * Processes the fg field.
-	 */
-	protected synchronized void processFG() {
-		try {
-
-			double fg = Double.parseDouble( _fgInput.getText().toString() );
-			double fgBrix = BrewMath.convertSGtoPlato( fg );
-			String fgBrixText = BrewConstants.NUMBER_FORMATTER.format( fgBrix );
-
-			// update brix field
-			_fgBrixWatcher.setEnabled( false );
-			_fgBrixInput.setTextKeepState( fgBrixText );
-			_fgBrixWatcher.setEnabled( true );
-
-			updateOutputs();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			_abvInput.setText( "[Invalid Input]" );
-		}
-	}
-
-	/**
-	 * Processes the og brix field.
-	 */
-	protected synchronized void processOGBrix() {
-		try {
-
-			double ogBrix = Double.parseDouble( _ogBrixInput.getText().toString() );
-			double og = BrewMath.convertPlatoToSG( ogBrix );
-			String ogText = BrewConstants.SG_FORMATTER.format( og );
-
-			// update og field
-			_ogWatcher.setEnabled( false );
-			_ogInput.setTextKeepState( ogText );
-			_ogWatcher.setEnabled( true );
-
-			updateOutputs();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			_abvInput.setText( "[Invalid Input]" );
-		}
-	}
-
-	/**
-	 * Processes the fg brix field.
-	 */
-	protected synchronized void processFGBrix() {
-		try {
-
-			double fgBrix = Double.parseDouble( _fgBrixInput.getText().toString() );
-			double fg = BrewMath.convertPlatoToSG( fgBrix );
-			String fgText = BrewConstants.SG_FORMATTER.format( fg );
-
-			// update fg field
-			_fgWatcher.setEnabled( false );
-			_fgInput.setTextKeepState( fgText );
-			_fgWatcher.setEnabled( true );
-
-			updateOutputs();
-
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			_abvInput.setText( "[Invalid Input]" );
-		}
-	}
-
-	/**
-	 * BaseWatcher 
-	 */
-	private abstract class BaseWatcher implements TextWatcher {
-
-		// Member Variables
-		protected boolean _enabled = true;
-
-		/**
-		 * Called on change
-		 */
-		public abstract void onChange( Editable s );
-
-		/**
-		 * Called after text has changed.
-		 */
-		public void afterTextChanged( Editable s ) {
-			if ( _enabled ) {
-				onChange( s );
-			}
-		}
-
-		/**
-		 * Called before text changed
-		 */
-		public void beforeTextChanged( CharSequence s, int start, int count, int after ) {
-		}
-
-		/**
-		 * Called as text is changed
-		 */
-		public void onTextChanged( CharSequence s, int start, int before, int count ) {
-		}
-
-		/**
-		 * Sets whether this listener is enabled
-		 */
-		public void setEnabled( boolean enabled ) {
-			_enabled = enabled;
-		}
-	}
-
-	/**
-	 * Listens to changes to the OG field
-	 */
-	private class OGInputWatcher extends BaseWatcher {
-
-		/**
-		 * Called after text has changed.
-		 */
-		public void onChange( Editable s ) {
-			processOG();
-		}
-	}
-
-	/**
-	 * Listens to changes to the OG brix field
-	 */
-	private class OGBrixInputWatcher extends BaseWatcher {
-
-		/**
-		 * Called after text has changed.
-		 */
-		public void onChange( Editable s ) {
-			processOGBrix();
-		}
-	}
-
-	/**
-	 * Listens to changes to the FG field
-	 */
-	private class FGInputWatcher extends BaseWatcher {
-
-		/**
-		 * Called after text has changed.
-		 */
-		public void onChange( Editable s ) {
-			processFG();
-		}
-	}
-
-	/**
-	 * Listens to changes to the FG brix field
-	 */
-	private class FGBrixInputWatcher extends BaseWatcher {
-
-		/**
-		 * Called after text has changed.
-		 */
-		public void onChange( Editable s ) {
-			processFGBrix();
 		}
 	}
 }
