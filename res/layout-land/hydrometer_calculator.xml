@@ -10,7 +10,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="5dip"
 		android:layout_gravity="center_vertical"
-		android:text="Hydrometers should be calibrated to 60 Defrees F, or about 15.5 Degrees C."/>
+		android:text="@string/hydrometer_calculator_description"/>
 		
 	<TextView
 		android:id="@+id/sg_reading_label"
@@ -18,7 +18,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="57dip"
 		android:layout_marginLeft="6dip"
-		android:text="Reading (SG/Plato):"/>
+		android:text="@string/hydrometer_calculator_sg_reading_label"/>
 	<EditText
 		android:id="@+id/sg_reading"
 		android:singleLine="true"
@@ -44,7 +44,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="117dip"
 		android:layout_alignLeft="@+id/sg_reading_label"
-		android:text="Temperature (C/F)"/>
+		android:text="@string/hydrometer_calculator_temp_reading_label"/>
 	<EditText
 		android:id="@+id/temp_reading_f"
 		android:singleLine="true"
@@ -70,7 +70,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="177dip"
 		android:layout_alignLeft="@+id/sg_reading_label"
-		android:text="Corrected SG (/Plato)"/>
+		android:text="@string/hydrometer_calculator_corrected_label"/>
 	<EditText
 		android:id="@+id/corrected_sg"
 		android:enabled="false"

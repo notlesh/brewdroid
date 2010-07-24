@@ -10,7 +10,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="25dip"
 		android:layout_marginLeft="106dip"
-		android:text="O.G.:"/>
+		android:text="@string/og"/>
 	<EditText
 		android:id="@+id/og"
 		android:singleLine="true"
@@ -25,7 +25,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="25dip"
 		android:layout_marginLeft="223dip"
-		android:text="Brix:"/>
+		android:text="@string/brix"/>
 	<EditText
 		android:id="@+id/ogBrix"
 		android:singleLine="true"
@@ -42,7 +42,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="77dip"
 		android:layout_marginLeft="106dip"
-		android:text="F.G.:"/>
+		android:text="@string/fg"/>
 	<EditText
 		android:id="@+id/fg"
 		android:singleLine="true"
@@ -57,7 +57,7 @@
 		android:layout_width="wrap_content"
 		android:layout_marginTop="77dip"
 		android:layout_marginLeft="223dip"
-		android:text="Brix:"/>
+		android:text="@string/brix"/>
 	<EditText
 		android:id="@+id/fgBrix"
 		android:singleLine="true"
@@ -75,7 +75,7 @@
 		android:layout_marginBottom="125dip"
 		android:layout_marginLeft="6dip"
 		android:layout_alignParentBottom="true"
-		android:text="Alcohol by Volume/Weight:"/>
+		android:text="@string/attenuation_calculator_abvw_label"/>
 	<EditText
 		android:id="@+id/abv"
 		android:enabled="false"
@@ -104,7 +104,7 @@
 		android:layout_marginBottom="75dip"
 		android:layout_marginLeft="6dip"
 		android:layout_alignParentBottom="true"
-		android:text="Attenuation Apparent/Real:"/>
+		android:text="@string/attenuation_calculator_attenuation_label"/>
 	<EditText
 		android:id="@+id/apparent_attenuation"
 		android:enabled="false"
@@ -133,7 +133,7 @@
 		android:layout_marginBottom="25dip"
 		android:layout_marginLeft="6dip"
 		android:layout_alignParentBottom="true"
-		android:text="Residual Extract SG/Plato:"/>
+		android:text="@string/attenuation_calculator_extract_label"/>
 	<EditText
 		android:id="@+id/extract_sg"
 		android:enabled="false"
