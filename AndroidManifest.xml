@@ -13,8 +13,8 @@
             </intent-filter>
         </activity>
 
-								<!-- attenuation calculator activity -->
         <activity android:name=".AttenuationCalculator" android:label="@string/attenuation_calculator"/>
+        <activity android:name=".HydrometerCalculator" android:label="@string/hydrometer_calculator"/>
 
     </application>
 </manifest> 

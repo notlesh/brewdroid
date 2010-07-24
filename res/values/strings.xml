@@ -3,4 +3,5 @@
     <string name="app_name">Brew Droid</string>
 
     <string name="attenuation_calculator">Attenuation Calculator</string>
+    <string name="hydrometer_calculator">Hydrometer Calculator</string>
 </resources>

@@ -13,6 +13,7 @@
 		android:text="O.G.:"/>
 	<EditText
 		android:id="@+id/og"
+		android:singleLine="true"
 		android:inputType="numberDecimal"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="10dip"
@@ -27,6 +28,7 @@
 		android:text="Brix:"/>
 	<EditText
 		android:id="@+id/ogBrix"
+		android:singleLine="true"
 		android:inputType="numberDecimal"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="10dip"
@@ -43,6 +45,7 @@
 		android:text="F.G.:"/>
 	<EditText
 		android:id="@+id/fg"
+		android:singleLine="true"
 		android:inputType="numberDecimal"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="62dip"
@@ -57,12 +60,13 @@
 		android:text="Brix:"/>
 	<EditText
 		android:id="@+id/fgBrix"
+		android:singleLine="true"
 		android:inputType="numberDecimal"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="62dip"
 		android:layout_marginLeft="265dip"
 		android:layout_width="75dip"
-		android:text="2.56"/>
+		android:text="2.564"/>
 
 	<!-- alcohol -->
 	<TextView
@@ -74,6 +78,8 @@
 		android:text="Alcohol by Volume/Weight:"/>
 	<EditText
 		android:id="@+id/abv"
+		android:enabled="false"
+		android:singleLine="true"
 		android:layout_height="wrap_content"
 		android:layout_width="80dip"
 		android:layout_marginBottom="110dip"
@@ -82,12 +88,14 @@
 		android:text="5.16%"/>
 	<EditText
 		android:id="@+id/abw"
+		android:enabled="false"
+		android:singleLine="true"
 		android:layout_height="wrap_content"
 		android:layout_width="80dip"
 		android:layout_marginBottom="110dip"
 		android:layout_marginLeft="320dip"
 		android:layout_alignParentBottom="true"
-		android:text="4.12%"/>
+		android:text="4.20%"/>
 
 	<!-- attenuation -->
 	<TextView
@@ -99,20 +107,24 @@
 		android:text="Attenuation Apparent/Real:"/>
 	<EditText
 		android:id="@+id/apparent_attenuation"
+		android:enabled="false"
+		android:singleLine="true"
 		android:layout_height="wrap_content"
 		android:layout_width="80dip"
 		android:layout_marginBottom="60dip"
 		android:layout_marginLeft="220dip"
 		android:layout_alignParentBottom="true"
-		android:text="79.33%"/>
+		android:text="80%"/>
 	<EditText
 		android:id="@+id/real_attenuation"
+		android:enabled="false"
+		android:singleLine="true"
 		android:layout_height="wrap_content"
 		android:layout_width="80dip"
 		android:layout_marginBottom="60dip"
 		android:layout_marginLeft="320dip"
 		android:layout_alignParentBottom="true"
-		android:text="65.87%"/>
+		android:text="65.54%"/>
 
 	<!-- residual extract -->
 	<TextView
@@ -124,6 +136,8 @@
 		android:text="Residual Extract SG/Plato:"/>
 	<EditText
 		android:id="@+id/extract_sg"
+		android:enabled="false"
+		android:singleLine="true"
 		android:layout_height="wrap_content"
 		android:layout_width="80dip"
 		android:layout_marginBottom="10dip"
@@ -132,6 +146,8 @@
 		android:text="1.017"/>
 	<EditText
 		android:id="@+id/extract_brix"
+		android:enabled="false"
+		android:singleLine="true"
 		android:layout_height="wrap_content"
 		android:layout_width="80dip"
 		android:layout_marginBottom="10dip"

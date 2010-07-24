@@ -15,18 +15,18 @@ import android.os.Bundle;
 public class BrewMath {
 
 	/**
-	 * Calculate ABV given OG and SG
+	 * Calculate ABV given OG and SG. Represented as a number between 0 and 1.
 	 */
 	public static double calculateABV( double og, double sg ) {
 		// TODO: don't use approximation
-		return (og-sg) * 129;
+		return (og-sg) * 1.29;
 	}
 
 	/**
-	 * Calculate ABW given OG and SG
+	 * Calculate ABW given OG and SG. Represented as a number between 0 and 1.
 	 */
 	public static double calculateABW( double og, double sg ) {
-		return 76.08d * (og - sg) / (1.775 - og);
+		return 0.7608d * ((og - sg) / (1.775 - og));
 	}
 
 	/**

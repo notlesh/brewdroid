@@ -29,17 +29,26 @@ public class BrewDroidMainMenu extends Activity {
 	 * Initializes widgets
 	 */
 	private void initializeWidgets() {
-		// attenuation calculator button
-		final Button button = (Button) findViewById(R.id.attenuation);
-				 button.setOnClickListener(new View.OnClickListener() {
-					 public void onClick( View v ) {
-						 Intent intent = new Intent( 
-								BrewDroidMainMenu.this,
-								AttenuationCalculator.class );
-						 BrewDroidMainMenu.this.startActivity( intent );
-						 BrewDroidMainMenu.this.finish();
-					 }
-				 });
+
+		final Button attenuationButton = (Button)findViewById(R.id.attenuation);
+		attenuationButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				Intent intent = new Intent( 
+						BrewDroidMainMenu.this,
+						AttenuationCalculator.class );
+				BrewDroidMainMenu.this.startActivity( intent );
+			}
+		});
+
+		final Button hydrometerButton = (Button)findViewById(R.id.hydrometer);
+		hydrometerButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				Intent intent = new Intent( 
+						BrewDroidMainMenu.this,
+						HydrometerCalculator.class );
+				BrewDroidMainMenu.this.startActivity( intent );
+			}
+		});
 
 	}
 }

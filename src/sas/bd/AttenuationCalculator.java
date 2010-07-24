@@ -29,7 +29,6 @@ public class AttenuationCalculator extends Activity {
 	protected EditText _fgInput;
 	protected EditText _ogBrixInput;
 	protected EditText _fgBrixInput;
-	protected DecimalFormat _formatter;
 	protected OGInputWatcher _ogWatcher;
 	protected OGBrixInputWatcher _ogBrixWatcher;
 	protected FGInputWatcher _fgWatcher;
@@ -43,8 +42,6 @@ public class AttenuationCalculator extends Activity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.attenuation_calculator );
 
-		_formatter = new DecimalFormat();
-
 		initializeWidgets();
     }
 
@@ -55,40 +52,15 @@ public class AttenuationCalculator extends Activity {
 
 		// pre-defined widgets
 		_ogInput = (EditText)findViewById(R.id.og);
-		_ogInput.setSingleLine();
-
 		_fgInput = (EditText)findViewById(R.id.fg);
-		_fgInput.setSingleLine();
-
 		_ogBrixInput = (EditText)findViewById(R.id.ogBrix);
-		_ogBrixInput.setSingleLine();
-
 		_fgBrixInput = (EditText)findViewById(R.id.fgBrix);
-		_fgBrixInput.setSingleLine();
-
 		_abvInput = (EditText)findViewById(R.id.abv);
-		_abvInput.setEnabled( false );
-		_abvInput.setSingleLine();
-
 		_abwInput = (EditText)findViewById(R.id.abw);
-		_abwInput.setEnabled( false );
-		_abwInput.setSingleLine();
-
 		_apparentAttenuationInput = (EditText)findViewById(R.id.apparent_attenuation);
-		_apparentAttenuationInput.setEnabled( false );
-		_apparentAttenuationInput.setSingleLine();
-
 		_realAttenuationInput = (EditText)findViewById(R.id.real_attenuation);
-		_realAttenuationInput.setEnabled( false );
-		_realAttenuationInput.setSingleLine();
-
 		_realExtractInput = (EditText)findViewById(R.id.extract_sg);
-		_realExtractInput.setEnabled( false );
-		_realExtractInput.setSingleLine();
-
 		_realExtractBrixInput = (EditText)findViewById(R.id.extract_brix);
-		_realExtractBrixInput.setEnabled( false );
-		_realExtractBrixInput.setSingleLine();
 
 		// set up listeners
 		_ogWatcher = new OGInputWatcher();
@@ -113,17 +85,21 @@ public class AttenuationCalculator extends Activity {
 
 			double abv = BrewMath.calculateABV( og, fg );
 			double abw = BrewMath.calculateABW( og, fg );
-			double apparentAttenuation = BrewMath.calculateApparentAttenuation( og, fg ) * 100;
-			double realAttenuation = BrewMath.calculateRealExtractPercent( og, fg ) * 100;
+			double apparentAttenuation = BrewMath.calculateApparentAttenuation( og, fg );
+			double realAttenuation = BrewMath.calculateRealExtractPercent( og, fg );
 			double extractSG = BrewMath.calculateRealExtract( og, fg );
 			double extractBrix = BrewMath.convertSGtoPlato( extractSG );
 
-			_abvInput.setText( ""+ _formatter.format(abv) + "%" );
-			_abwInput.setText( ""+ _formatter.format(abw) + "%" );
-			_apparentAttenuationInput.setText( ""+ _formatter.format(apparentAttenuation) + "%" );
-			_realAttenuationInput.setText( ""+ _formatter.format(realAttenuation) + "%" );
-			_realExtractInput.setText( ""+ _formatter.format(extractSG) );
-			_realExtractBrixInput.setText( ""+ _formatter.format(extractBrix) );
+			_abvInput.setText( ""+ BrewConstants.PERCENT_FORMATTER.format(abv) );
+			_abwInput.setText( ""+ BrewConstants.PERCENT_FORMATTER.format(abw) );
+			_apparentAttenuationInput.setText( 
+					""+ BrewConstants.PERCENT_FORMATTER.format(apparentAttenuation) );
+			_realAttenuationInput.setText( 
+					""+ BrewConstants.PERCENT_FORMATTER.format(realAttenuation) );
+			_realExtractInput.setText( 
+					""+ BrewConstants.SG_FORMATTER.format(extractSG) );
+			_realExtractBrixInput.setText( 
+					""+ BrewConstants.NUMBER_FORMATTER.format(extractBrix) );
 
 		} catch ( Exception e ) {
 			// e.printStackTrace();
@@ -139,7 +115,7 @@ public class AttenuationCalculator extends Activity {
 
 			double og = Double.parseDouble( _ogInput.getText().toString() );
 			double ogBrix = BrewMath.convertSGtoPlato( og );
-			String ogBrixText = _formatter.format( ogBrix );
+			String ogBrixText = BrewConstants.NUMBER_FORMATTER.format( ogBrix );
 
 			// update brix field
 			_ogBrixWatcher.setEnabled( false );
@@ -162,7 +138,7 @@ public class AttenuationCalculator extends Activity {
 
 			double fg = Double.parseDouble( _fgInput.getText().toString() );
 			double fgBrix = BrewMath.convertSGtoPlato( fg );
-			String fgBrixText = _formatter.format( fgBrix );
+			String fgBrixText = BrewConstants.NUMBER_FORMATTER.format( fgBrix );
 
 			// update brix field
 			_fgBrixWatcher.setEnabled( false );
@@ -185,7 +161,7 @@ public class AttenuationCalculator extends Activity {
 
 			double ogBrix = Double.parseDouble( _ogBrixInput.getText().toString() );
 			double og = BrewMath.convertPlatoToSG( ogBrix );
-			String ogText = _formatter.format( og );
+			String ogText = BrewConstants.SG_FORMATTER.format( og );
 
 			// update og field
 			_ogWatcher.setEnabled( false );
@@ -208,7 +184,7 @@ public class AttenuationCalculator extends Activity {
 
 			double fgBrix = Double.parseDouble( _fgBrixInput.getText().toString() );
 			double fg = BrewMath.convertPlatoToSG( fgBrix );
-			String fgText = _formatter.format( fg );
+			String fgText = BrewConstants.SG_FORMATTER.format( fg );
 
 			// update fg field
 			_fgWatcher.setEnabled( false );
