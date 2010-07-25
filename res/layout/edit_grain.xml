@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/edit_grain_name_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="16dip"
+			android:layout_marginLeft="6dip"
+			android:text="@+string/edit_grain_name"/>
+
+		<EditText
+			android:id="@+id/edit_grain_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="4dip"
+			android:layout_marginLeft="10dip"
+			android:layout_marginRight="10dip"
+			android:layout_alignParentRight="true"
+			android:layout_toRightOf="@+id/edit_grain_name_label"/>
+
+		<TextView
+			android:id="@+id/edit_grain_origin_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="6dip"
+			android:layout_marginTop="16dip"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/edit_grain_name"
+			android:text="@+string/edit_grain_origin"/>
+
+		<EditText
+			android:id="@+id/edit_grain_origin"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@+id/edit_grain_origin_label"
+			android:layout_below="@+id/edit_grain_name"
+			android:layout_alignRight="@+id/edit_grain_name"
+			android:layout_marginLeft="10dip"
+			android:layout_marginTop="6dip"/>
+
+		<TextView
+			android:id="@+id/edit_grain_srm_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="6dip"
+			android:layout_marginTop="16dip"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/edit_grain_origin"
+			android:text="@+string/edit_grain_srm"/>
+
+		<EditText
+			android:id="@+id/edit_grain_srm"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@+id/edit_grain_srm_label"
+			android:layout_below="@+id/edit_grain_origin"
+			android:layout_alignRight="@+id/edit_grain_origin"
+			android:layout_marginLeft="10dip"
+			android:layout_marginTop="6dip"/>
+
+		<TextView
+			android:id="@+id/edit_grain_potential_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="6dip"
+			android:layout_marginTop="16dip"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/edit_grain_srm"
+			android:text="@+string/edit_grain_potential"/>
+
+		<EditText
+			android:id="@+id/edit_grain_potential"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@+id/edit_grain_potential_label"
+			android:layout_below="@+id/edit_grain_srm"
+			android:layout_alignRight="@+id/edit_grain_srm"
+			android:layout_marginLeft="10dip"
+			android:layout_marginTop="6dip"/>
+
+		<Button
+			android:id="@+id/edit_grain_submit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginBottom="6dip"
+			android:layout_marginRight="20dip"
+			android:text="@+string/create"/>
+
+</RelativeLayout>

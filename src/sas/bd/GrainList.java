@@ -18,6 +18,13 @@ import android.os.Bundle;
  */
 public class GrainList extends ListActivity {
 
+	private static final int NEW_GRAIN = 1;
+	private static final int EDIT_GRAIN = 2;
+	private static final int DELETE_GRAIN = 3;
+
+	// Member Variables
+	protected GrainDatabase _grainDB;
+
     /** 
 	 * Called when the activity is first created. 
 	 */
@@ -26,8 +33,37 @@ public class GrainList extends ListActivity {
         super.onCreate( savedInstanceState );
         // setContentView( R.layout.grain_list );
 
+		_grainDB = new GrainDatabase( this );
+
 		initializeWidgets();
     }
+
+	/**
+	 * Called to create options menu
+	 */
+	@Override
+	public boolean onCreateOptionsMenu( Menu menu ) {
+		menu.add( 0, NEW_GRAIN, 0, "New" );
+		menu.add( 0, EDIT_GRAIN, 0, "Edit" );
+		menu.add( 0, DELETE_GRAIN, 0, "Delete" );
+		return true;
+	}
+
+	/**
+	 * Called when menu option is selected
+	 */
+	@Override
+	public boolean onOptionsItemSelected( MenuItem item ) {
+		switch ( item.getItemId() ) {
+			case NEW_GRAIN:
+				Intent intent = new Intent( 
+						GrainList.this,
+						EditGrain.class );
+				GrainList.this.startActivity( intent );
+				break;
+		}
+		return true;
+	}
 
 	/**
 	 * Initialize widgets
@@ -48,7 +84,7 @@ public class GrainList extends ListActivity {
 	}
 
 	/**
-	 * Custom array adapter class
+	 * Returns grain list row widgets
 	 */
 	private class GrainArrayAdapter extends ArrayAdapter<GrainModel> {
 

@@ -10,6 +10,7 @@
 				<string name="og">O.G.:"</string>
 				<string name="fg">F.G.:"</string>
 				<string name="brix">Brix:"</string>
+				<string name="create">Create</string>
 
 				<!-- Attenuation Calculator Strings -->
 				<string name="attenuation_calculator_abvw_label">Alcohol by Volume/Weight:</string>
@@ -21,5 +22,12 @@
 				<string name="hydrometer_calculator_sg_reading_label">Reading (SG/Plato):</string>
 				<string name="hydrometer_calculator_temp_reading_label">Temperature (F/C):</string>
 				<string name="hydrometer_calculator_corrected_label">Corrected SG (/Plato):</string>
+
+				<!-- Edit Grain -->
+				<string name="edit_grain">Edit Grain</string>
+				<string name="edit_grain_name">Grain Name:</string>
+				<string name="edit_grain_origin">Country of Origin:</string>
+				<string name="edit_grain_srm">Color Potential (SRM):</string>
+				<string name="edit_grain_potential">Potential:</string>
 
 </resources>
