@@ -95,6 +95,14 @@ public class HydrometerCalculator extends Activity {
 	protected void updateOutputs() {
 		try {
 			// TODO:
+			double sg = Double.parseDouble( _sgReading.getText().toString() );
+			double f = Double.parseDouble( _tempF.getText().toString() );
+
+			double corrected = BrewMath.estimateSGCorrection( sg, f );
+			double correctedBrix = BrewMath.convertSGtoPlato( corrected );
+
+			_correctedReading.setText( ""+ corrected );
+			_correctedBrixReading.setText( ""+ correctedBrix );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

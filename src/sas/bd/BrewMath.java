@@ -84,4 +84,39 @@ public class BrewMath {
 	public static double convertDegreesCtoF( double c ) {
 		return (9.0d/5.0d) * c + 32.0d;
 	}
+
+	/**
+	 * Use look up table to estimate SG correction
+	 */
+	public static double estimateSGCorrection( double sg, double f ) {
+		int d = (int)(f+4) / 10; // divide by ten, discard remainder, round up
+		switch ( d ) {
+			case 4:
+				return sg - 0.002d;
+			case 5:
+				return sg - 0.001d;
+			case 6:
+				return sg;
+			case 7:
+				return sg + 0.001d;
+			case 8:
+				return sg + 0.002d;
+			case 9:
+				return sg + 0.004d;
+			case 10:
+				return sg + 0.005d;
+			case 11:
+				return sg + 0.007d;
+			case 12:
+				return sg + 0.008d;
+			case 13:
+				return sg + 0.010d;
+			case 14:
+				return sg + 0.013d;
+			case 15:
+				return sg + 0.015d;
+		}
+
+		throw new IllegalArgumentException( ""+ f + " is out of temperature range (40F-150F)" );
+	}
 }
