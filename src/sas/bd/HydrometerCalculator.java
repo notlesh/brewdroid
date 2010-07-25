@@ -87,6 +87,67 @@ public class HydrometerCalculator extends Activity {
 		_tempF.addTextChangedListener( _tempFWatcher );
 		_tempC.addTextChangedListener( _tempCWatcher );
 
+		_tempF.setOnFocusChangeListener( new View.OnFocusChangeListener() {
+			public void onFocusChange( View v, boolean hasFocus ) {
+				if ( ! hasFocus ) {
+					normalizeTempF();
+				}
+			}
+		} );
+		_tempC.setOnFocusChangeListener( new View.OnFocusChangeListener() {
+			public void onFocusChange( View v, boolean hasFocus ) {
+				if ( ! hasFocus ) {
+					normalizeTempC();
+				}
+			}
+		} );
+
+		// initialize to nice values
+		updateOutputs();
+		normalizeTempF();
+		normalizeTempC();
+
+	}
+
+	/**
+	 * Update f temperature field
+	 */
+	public void normalizeTempF() {
+		try {
+
+			String tempFInput = _tempF.getText().toString();
+			tempFInput = tempFInput.replaceAll( "\u00b0", "" );
+			tempFInput = tempFInput.replaceAll( "F", "" );
+
+			double d = Double.parseDouble( tempFInput );
+			String normalized = BrewConstants.FARENHEIT_FORMATTER.format( d );
+			_tempFWatcher.disable();
+			_tempF.setText( normalized );
+			_tempFWatcher.enable();
+		} catch ( Exception e ) {
+			// exception ok
+		}
+	}
+
+	/**
+	 * Updates c temperature field
+	 */
+	public void normalizeTempC() {
+
+		try {
+
+			String tempCInput = _tempC.getText().toString();
+			tempCInput = tempCInput.replaceAll( "\u00b0", "" );
+			tempCInput = tempCInput.replaceAll( "C", "" );
+
+			double d = Double.parseDouble( tempCInput );
+			String normalized = BrewConstants.FARENHEIT_FORMATTER.format( d );
+			_tempCWatcher.disable();
+			_tempC.setText( normalized );
+			_tempCWatcher.enable();
+		} catch ( Exception e ) {
+			// exception ok
+		}
 	}
 
 	/**
@@ -96,7 +157,11 @@ public class HydrometerCalculator extends Activity {
 		try {
 			// TODO:
 			double sg = Double.parseDouble( _sgReading.getText().toString() );
-			double f = Double.parseDouble( _tempF.getText().toString() );
+
+			String tempFInput = _tempF.getText().toString();
+			tempFInput = tempFInput.replaceAll( "\u00b0", "" );
+			tempFInput = tempFInput.replaceAll( "F", "" );
+			double f = Double.parseDouble( tempFInput );
 
 			double corrected = BrewMath.estimateSGCorrection( sg, f );
 			double correctedBrix = BrewMath.convertSGtoPlato( corrected );
