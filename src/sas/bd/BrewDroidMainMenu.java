@@ -30,7 +30,7 @@ public class BrewDroidMainMenu extends Activity {
 	 */
 	private void initializeWidgets() {
 
-		final Button attenuationButton = (Button)findViewById(R.id.attenuation);
+		final Button attenuationButton = (Button)findViewById(R.id.attenuation_button);
 		attenuationButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
 				Intent intent = new Intent( 
@@ -40,12 +40,22 @@ public class BrewDroidMainMenu extends Activity {
 			}
 		});
 
-		final Button hydrometerButton = (Button)findViewById(R.id.hydrometer);
+		final Button hydrometerButton = (Button)findViewById(R.id.hydrometer_button);
 		hydrometerButton.setOnClickListener( new View.OnClickListener() {
 			public void onClick( View v ) {
 				Intent intent = new Intent( 
 						BrewDroidMainMenu.this,
 						HydrometerCalculator.class );
+				BrewDroidMainMenu.this.startActivity( intent );
+			}
+		});
+
+		final Button grainsButton = (Button)findViewById(R.id.grains_button);
+		grainsButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				Intent intent = new Intent( 
+						BrewDroidMainMenu.this,
+						GrainList.class );
 				BrewDroidMainMenu.this.startActivity( intent );
 			}
 		});

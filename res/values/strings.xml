@@ -4,6 +4,7 @@
 
     <string name="attenuation_calculator">Attenuation Calculator</string>
     <string name="hydrometer_calculator">Hydrometer Calculator</string>
+    <string name="grain_list">Grain List</string>
 
 				<!-- general -->
 				<string name="og">O.G.:"</string>

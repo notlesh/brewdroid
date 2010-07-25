@@ -15,6 +15,7 @@
 
         <activity android:name=".AttenuationCalculator" android:label="@string/attenuation_calculator"/>
         <activity android:name=".HydrometerCalculator" android:label="@string/hydrometer_calculator"/>
+        <activity android:name=".GrainList" android:label="@string/grain_list"/>
 
     </application>
 </manifest> 

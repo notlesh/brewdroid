@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
+		android:layout_height="wrap_content">
 	<Button
-		android:id="@+id/attenuation"
+		android:id="@+id/attenuation_button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/attenuation_calculator"/>
 	<Button
-		android:id="@+id/hydrometer"
+		android:id="@+id/hydrometer_button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/hydrometer_calculator"/>
+	<Button
+		android:id="@+id/grains_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/grain_list"/>
 
 </LinearLayout>
