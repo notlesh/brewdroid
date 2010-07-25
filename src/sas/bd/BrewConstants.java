@@ -22,5 +22,7 @@ public class BrewConstants extends Activity {
 	protected static NumberFormat BRIX_FORMATTER = NUMBER_FORMATTER;
 	protected static NumberFormat SG_FORMATTER = new DecimalFormat( "0.000" );
 	protected static NumberFormat PERCENT_FORMATTER = new DecimalFormat( "##0.00%" );
+	protected static NumberFormat CELCIUS_FORMATTER = NUMBER_FORMATTER;
+	protected static NumberFormat FARENHEIT_FORMATTER = NUMBER_FORMATTER;
 
 }

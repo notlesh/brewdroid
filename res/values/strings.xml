@@ -16,9 +16,9 @@
 				<string name="attenuation_calculator_extract_label">Residual Extract SG/Plato:</string>
 
 				<!-- Hydrometer Calculator Strings -->
-				<string name="hydrometer_calculator_description">Hydrometers should be calibrated to 60 Defrees F, or about 15.5 Degrees C.</string>
+				<string name="hydrometer_calculator_description">Hydrometers should be calibrated to 60 Degrees F, or about 15.5 Degrees C.</string>
 				<string name="hydrometer_calculator_sg_reading_label">Reading (SG/Plato):</string>
-				<string name="hydrometer_calculator_temp_reading_label">Temperature (C/F):</string>
+				<string name="hydrometer_calculator_temp_reading_label">Temperature (F/C):</string>
 				<string name="hydrometer_calculator_corrected_label">Corrected SG (/Plato):</string>
 
 </resources>

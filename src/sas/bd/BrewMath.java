@@ -70,4 +70,18 @@ public class BrewMath {
 	public static double convertSGtoPlato( double sg ) {
 		return 259.0d - (259.0d / sg);
 	}
+
+	/**
+	 * Converts Farenheit to Celcius
+	 */
+	public static double convertDegreesFtoC( double f ) {
+		return (5.0d/9.0d) * (f - 32.0d);
+	}
+
+	/**
+	 * Converts Celcius to Farenheit
+	 */
+	public static double convertDegreesCtoF( double c ) {
+		return (9.0d/5.0d) * c + 32.0d;
+	}
 }

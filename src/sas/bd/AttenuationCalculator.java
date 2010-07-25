@@ -51,16 +51,16 @@ public class AttenuationCalculator extends Activity {
 	private void initializeWidgets() {
 
 		// pre-defined widgets
-		_ogInput = (EditText)findViewById(R.id.og);
-		_fgInput = (EditText)findViewById(R.id.fg);
-		_ogBrixInput = (EditText)findViewById(R.id.ogBrix);
-		_fgBrixInput = (EditText)findViewById(R.id.fgBrix);
-		_abvInput = (EditText)findViewById(R.id.abv);
-		_abwInput = (EditText)findViewById(R.id.abw);
-		_apparentAttenuationInput = (EditText)findViewById(R.id.apparent_attenuation);
-		_realAttenuationInput = (EditText)findViewById(R.id.real_attenuation);
-		_realExtractInput = (EditText)findViewById(R.id.extract_sg);
-		_realExtractBrixInput = (EditText)findViewById(R.id.extract_brix);
+		_ogInput = (EditText)findViewById( R.id.og );
+		_fgInput = (EditText)findViewById( R.id.fg );
+		_ogBrixInput = (EditText)findViewById( R.id.ogBrix );
+		_fgBrixInput = (EditText)findViewById( R.id.fgBrix );
+		_abvInput = (EditText)findViewById( R.id.abv );
+		_abwInput = (EditText)findViewById( R.id.abw );
+		_apparentAttenuationInput = (EditText)findViewById( R.id.apparent_attenuation );
+		_realAttenuationInput = (EditText)findViewById( R.id.real_attenuation );
+		_realExtractInput = (EditText)findViewById( R.id.extract_sg );
+		_realExtractBrixInput = (EditText)findViewById( R.id.extract_brix );
 
 		// set up listeners
 		_ogWatcher = new BrixFromSGWatcher( _ogBrixInput ) {
