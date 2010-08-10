@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:focusable="false"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 
 		<TextView
 			android:id="@+id/grain_list_item_name"
+		android:focusable="false"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="4dip"
@@ -14,6 +16,7 @@
 
 		<TextView
 			android:id="@+id/grain_list_item_origin"
+		android:focusable="false"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_below="@+id/grain_list_item_name"
@@ -24,6 +27,7 @@
 
 		<TextView
 			android:id="@+id/grain_list_item_srm"
+		android:focusable="false"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
@@ -34,6 +38,7 @@
 
 		<TextView
 			android:id="@+id/grain_list_item_potential"
+		android:focusable="false"
 			android:layout_toLeftOf="@+id/grain_list_item_srm"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

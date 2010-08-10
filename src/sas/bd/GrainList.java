@@ -3,9 +3,12 @@
  */
 package sas.bd;
 
+import sas.bd.objects.*;
+
 import java.text.*;
 import java.util.*;
 
+import android.database.*;
 import android.view.*;
 import android.text.*;
 import android.widget.*;
@@ -18,12 +21,19 @@ import android.os.Bundle;
  */
 public class GrainList extends ListActivity {
 
+	// menu numbers
 	private static final int NEW_GRAIN = 1;
 	private static final int EDIT_GRAIN = 2;
 	private static final int DELETE_GRAIN = 3;
 
+	// request codes
+	private static final int NEW_GRAIN_REQUEST = 1001;
+	private static final int EDIT_GRAIN_REQUEST = 1002;
+
 	// Member Variables
-	protected GrainDatabase _grainDB;
+	private Cursor _cursor;
+	private GrainCursorAdapter _adapter;
+	private Map<View, String> _viewMap;
 
     /** 
 	 * Called when the activity is first created. 
@@ -33,8 +43,7 @@ public class GrainList extends ListActivity {
         super.onCreate( savedInstanceState );
         // setContentView( R.layout.grain_list );
 
-		_grainDB = new GrainDatabase( this );
-
+		_cursor = GrainDatabase.instance(GrainList.this).getListCursor();
 		initializeWidgets();
     }
 
@@ -43,23 +52,19 @@ public class GrainList extends ListActivity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu( Menu menu ) {
-		menu.add( 0, NEW_GRAIN, 0, "New" );
-		menu.add( 0, EDIT_GRAIN, 0, "Edit" );
-		menu.add( 0, DELETE_GRAIN, 0, "Delete" );
+		menu.add( 0, NEW_GRAIN, 0, getString( R.string.newLabel ));
 		return true;
 	}
 
 	/**
-	 * Called when menu option is selected
+	 * Called when (main activity) menu option is selected
 	 */
 	@Override
 	public boolean onOptionsItemSelected( MenuItem item ) {
 		switch ( item.getItemId() ) {
 			case NEW_GRAIN:
-				Intent intent = new Intent( 
-						GrainList.this,
-						EditGrain.class );
-				GrainList.this.startActivity( intent );
+				Intent intent = new Intent( this, EditGrain.class );
+				startActivityForResult( intent, NEW_GRAIN_REQUEST );
 				break;
 		}
 		return true;
@@ -70,104 +75,153 @@ public class GrainList extends ListActivity {
 	 */
 	public void initializeWidgets() {
 
-		setListAdapter( new GrainArrayAdapter() );
-
-		ListView listView = getListView();
-		listView.setTextFilterEnabled( true );
-
-		listView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
-			public void onItemClick( AdapterView<?> parent, View view, int position, long id ) {
-				// noop
-			}
-		} );
-
+		_viewMap = new HashMap();
+		_adapter = new GrainCursorAdapter();
+		setListAdapter( _adapter );
+		registerForContextMenu( getListView() );
 	}
 
 	/**
-	 * Returns grain list row widgets
+	 * Handle result from sub-screens
 	 */
-	private class GrainArrayAdapter extends ArrayAdapter<GrainModel> {
+	@Override
+	protected void onActivityResult( int requestCode, int resultCode, Intent intent ) {
+		System.out.println( "onActivityResult()" );
+		if ( resultCode == Activity.RESULT_CANCELED ) {
+			// noop
+		} else if ( resultCode != Activity.RESULT_OK ) {
+			throw new IllegalArgumentException( "How did we get here?" );
+		}
+
+		switch ( requestCode ) {
+			case NEW_GRAIN_REQUEST:
+				_viewMap.clear();
+				_cursor = GrainDatabase.instance(GrainList.this).getListCursor();
+				_adapter.changeCursor( _cursor );
+				break;
+			case EDIT_GRAIN_REQUEST:
+				_viewMap.clear();
+				_cursor = GrainDatabase.instance(GrainList.this).getListCursor();
+				_adapter.changeCursor( _cursor );
+				break;
+		}
+	}
+
+	/**
+	 * Called when an item is clicked
+	 */
+	@Override
+	public void onListItemClick( ListView listView, View view, int position, long id ) {
+		Toast.makeText( GrainList.this, "Clicked "+ _viewMap.get(view), 150 ).show();
+
+		// TODO: if we are in select-grain mode, select this. otherwise, noop.
+	}
+
+	/**
+	 * Called to create context menu
+	 */
+	@Override
+	public void onCreateContextMenu( 
+			ContextMenu menu, 
+			View listView, 
+			ContextMenu.ContextMenuInfo info ) {
+
+		AdapterView.AdapterContextMenuInfo adapterContextInfo 
+				= (AdapterView.AdapterContextMenuInfo)info;
+		View view = adapterContextInfo.targetView;
+
+		// construct context menu
+		String grainName = ((TextView)view.findViewById( R.id.grain_list_item_name )).getText().toString();
+		menu.setHeaderTitle( getString( R.string.edit ) +" "+ grainName );
+		menu.add( 1, EDIT_GRAIN, 0, getString( R.string.edit ) );
+		menu.add( 1, DELETE_GRAIN, 0, getString( R.string.delete ) );
+	}
+
+	/**
+	 * Called to handle menu click (from context menu)
+	 */
+	@Override
+	public boolean onContextItemSelected( MenuItem item ) {
+		AdapterView.AdapterContextMenuInfo info
+				= (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+		View view = info.targetView;
+		String id = _viewMap.get( view );
+		String grainName = ((TextView)view.findViewById( R.id.grain_list_item_name )).getText().toString();
+
+		switch ( item.getItemId() ) {
+			case EDIT_GRAIN:
+				Toast.makeText( GrainList.this, "edit "+ id, 150 ).show();
+				break;
+			case DELETE_GRAIN:
+
+				// TODO: try/catch
+				GrainDatabase.instance(GrainList.this).remove( id );
+				_viewMap.clear();
+				_cursor = GrainDatabase.instance(GrainList.this).getListCursor();
+				_adapter.changeCursor( _cursor );
+
+				String message = String.format( getString(R.string.removed), grainName );
+				Toast.makeText( GrainList.this, message, 200 ).show();
+				break;
+		}
+
+		return true;
+		
+	}
+
+	/**
+	 * GrainCursorAdapter
+	 */
+	private class GrainCursorAdapter extends SimpleCursorAdapter {
 
 		/**
 		 * Constructor
 		 */
-		public GrainArrayAdapter() {
-			super( GrainList.this, R.layout.grain_list_item, R.id.grain_list_item_name, TEST_GRAINS );
+		public GrainCursorAdapter() {
+			super( 
+				GrainList.this,
+				R.layout.grain_list_item,
+				_cursor,
+				new String[] {
+					GrainDatabase.NAME,
+					GrainDatabase.ORIGIN,
+					GrainDatabase.SRM,
+					GrainDatabase.POTENTIAL
+				},
+				new int[] {
+					R.id.grain_list_item_name,
+					R.id.grain_list_item_origin,
+					R.id.grain_list_item_srm,
+					R.id.grain_list_item_potential
+				} );
+
 		}
 
 		/**
-		 * Override getView
+		 * Override getview so we can add long click listeners
 		 */
+		@Override
 		public View getView( int position, View convertView, ViewGroup parent ) {
-			
-			GrainModel model = TEST_GRAINS.get( position );
 
-			LayoutInflater inflater = (LayoutInflater)getSystemService(
-			      Context.LAYOUT_INFLATER_SERVICE );
-			View row = inflater.inflate( R.layout.grain_list_item, null );
-			TextView name = (TextView)row.findViewById( R.id.grain_list_item_name );
-			TextView origin = (TextView)row.findViewById( R.id.grain_list_item_origin );
-			TextView potential = (TextView)row.findViewById( R.id.grain_list_item_potential );
-			TextView srm = (TextView)row.findViewById( R.id.grain_list_item_srm );
 
-			name.setText( model.getName() );
-			origin.setText( model.getOrigin() );
-			potential.setText( "100%" );
-			srm.setText( "12" );
 
-			return row;
+			if ( _cursor.getPosition() < _cursor.getCount() ) {
+
+				View view = super.getView( position, convertView, parent );
+
+				// grab id before cursor is advanced
+				String id = _cursor.getString(0);
+
+				// hang on to it until we redraw
+				_viewMap.put( view, id );
+
+				return view;
+			} else {
+
+				// if empty, delegate to super and be done
+				return super.getView( position, convertView, parent );
+			}
 		}
-	}
-
-	/**
-	 * Grain Model class
-	 */
-	public static class GrainModel {
-
-		// Member Variables
-		protected String _name;
-		protected String _origin;
-
-		/**
-		 * Constructor
-		 */
-		public GrainModel( String name, String origin ) {
-			_name = name;
-			_origin = origin;
-		}
-
-		/**
-		 * Returns the name 
-		 */
-		public String getName() {
-			return _name;
-		}
-
-		/**
-		 * Returns the origin
-		 */
-		public String getOrigin() {
-			return _origin;
-		}
-
-		/**
-		 * To String
-		 */
-		public String toString() {
-			return _name;
-		}
-	}
-
-	// test data
-	public static final List<GrainModel> TEST_GRAINS = new ArrayList(23);
-	static {
-		TEST_GRAINS.add( new GrainModel( "Pale Ale 2-row", "USA" ));
-		TEST_GRAINS.add( new GrainModel( "Pale Ale 6-row", "USA" ));
-		TEST_GRAINS.add( new GrainModel( "Pale Ale 2-row", "Germany" ));
-		TEST_GRAINS.add( new GrainModel( "Pale Ale 6-row", "Germany" ));
-		TEST_GRAINS.add( new GrainModel( "Pilsener 2-row", "USA" ));
-		TEST_GRAINS.add( new GrainModel( "Pilsener", "Germany" ));
-		TEST_GRAINS.add( new GrainModel( "Pilsener", "Czech Republic" ));
-		TEST_GRAINS.add( new GrainModel( "Munich", "Germany" ));
 	}
 }
+

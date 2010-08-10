@@ -10,7 +10,11 @@
 				<string name="og">O.G.:"</string>
 				<string name="fg">F.G.:"</string>
 				<string name="brix">Brix:"</string>
+				<string name="newLabel">New</string>
 				<string name="create">Create</string>
+				<string name="delete">Delete</string>
+				<string name="edit">Edit</string>
+				<string name="removed">Removed %1$s</string>
 
 				<!-- Attenuation Calculator Strings -->
 				<string name="attenuation_calculator_abvw_label">Alcohol by Volume/Weight:</string>
@@ -29,5 +33,6 @@
 				<string name="edit_grain_origin">Country of Origin:</string>
 				<string name="edit_grain_srm">Color Potential (SRM):</string>
 				<string name="edit_grain_potential">Potential:</string>
+				<string name="edit_grain_list_menu_title">Modify Grain</string>
 
 </resources>
