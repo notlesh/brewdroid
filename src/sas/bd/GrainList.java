@@ -95,10 +95,6 @@ public class GrainList extends ListActivity {
 
 		switch ( requestCode ) {
 			case NEW_GRAIN_REQUEST:
-				_viewMap.clear();
-				_cursor = GrainDatabase.instance(GrainList.this).getListCursor();
-				_adapter.changeCursor( _cursor );
-				break;
 			case EDIT_GRAIN_REQUEST:
 				_viewMap.clear();
 				_cursor = GrainDatabase.instance(GrainList.this).getListCursor();
@@ -150,7 +146,9 @@ public class GrainList extends ListActivity {
 
 		switch ( item.getItemId() ) {
 			case EDIT_GRAIN:
-				Toast.makeText( GrainList.this, "edit "+ id, 150 ).show();
+				Intent intent = new Intent( this, EditGrain.class );
+				intent.putExtra( GrainDatabase.GUID, id );
+				startActivityForResult( intent, NEW_GRAIN_REQUEST );
 				break;
 			case DELETE_GRAIN:
 

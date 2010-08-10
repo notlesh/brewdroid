@@ -43,16 +43,28 @@ public class GrainDatabase {
 	public static final String CREATE_TABLE_STATEMENT =
 			"CREATE TABLE "+ TABLE_NAME +" ("+ GUID +" TEXT, "+ NAME +" TEXT, "+ ORIGIN
 			+" TEXT, "+ SRM +" INTEGER, "+ POTENTIAL +" REAL);";
+
 	public static final String INSERT_STATEMENT =
 			"INSERT INTO "+ TABLE_NAME +" VALUES ( ?, ?, ?, ?, ? );";
+
+	public static final String UPDATE_STATEMENT =
+			"UPDATE "+ TABLE_NAME +" SET "+ NAME +"=?, "+ ORIGIN +"=?, "+ SRM +"=?, "+
+			POTENTIAL +"=? WHERE "+ GUID +"=?";
+
+	public static final String FETCH_STATEMENT =
+			"SELECT * FROM "+ TABLE_NAME +" WHERE "+ GUID +"=?";
+
 	public static final String LIST_STATEMENT =
 			"SELECT * FROM "+ TABLE_NAME;
+
 	public static final String DELETE_STATEMENT =
 			"DELETE FROM "+ TABLE_NAME +" WHERE "+ GUID +"=?";
 	
 
 	// Compiled queries
 	private final SQLiteStatement _insertQuery;
+	private final SQLiteStatement _updateQuery;
+	private final SQLiteStatement _fetchQuery;
 	private final SQLiteStatement _deleteQuery;
 
 	/**
@@ -75,6 +87,8 @@ public class GrainDatabase {
 
 		_db = helper.getWritableDatabase();
 		_insertQuery = _db.compileStatement( INSERT_STATEMENT );
+		_updateQuery = _db.compileStatement( UPDATE_STATEMENT );
+		_fetchQuery = _db.compileStatement( FETCH_STATEMENT );
 		_deleteQuery = _db.compileStatement( DELETE_STATEMENT );
 	}
 
@@ -92,13 +106,48 @@ public class GrainDatabase {
 	}
 
 	/**
+	 * Updates a GrainModel
+	 */
+	public void update( GrainModel model ) {
+		_updateQuery.clearBindings();
+		_updateQuery.bindString( 5, model.getGUID() );
+		_updateQuery.bindString( 1, model.getName() );
+		_updateQuery.bindString( 2, model.getOrigin() );
+		_updateQuery.bindDouble( 3, model.getSRM() );
+		_updateQuery.bindDouble( 4, model.getPotential() );
+		_updateQuery.execute();
+	}
+
+	/**
 	 * Remove a grain
 	 * TODO: referential integrity check (or make delet a soft delete)
 	 */
-	public void remove( String id ) {
+	public void remove( String guid ) {
 		_deleteQuery.clearBindings();
-		_deleteQuery.bindString( 1, id );
+		_deleteQuery.bindString( 1, guid );
 		_deleteQuery.execute();
+	}
+
+	/**
+	 * Fetch a single grain
+	 */
+	public GrainModel getGrain( String guid ) {
+		Cursor cursor = _db.rawQuery( FETCH_STATEMENT, new String[] { guid } );
+		int count = cursor.getCount();
+		if ( count == 0 ) {
+			return null;
+		} else if ( count > 1 ) {
+			throw new IllegalStateException( "More than one grain with a guid" );
+		} else {
+			cursor.moveToNext();
+
+			String name = cursor.getString(1);
+			String origin = cursor.getString(2);
+			double srm = cursor.getDouble(3);
+			double potential = cursor.getDouble(4);
+
+			return new GrainModel( guid, name, origin, srm, potential );
+		}
 	}
 
 	/**

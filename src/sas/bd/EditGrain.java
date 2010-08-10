@@ -26,6 +26,7 @@ public class EditGrain extends Activity {
 	protected EditText _originInput;
 	protected EditText _potentialInput;
 	protected EditText _srmInput;
+	protected String _grainGUID;
 
     /** 
 	 * Called when the activity is first created. 
@@ -34,6 +35,9 @@ public class EditGrain extends Activity {
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.edit_grain );
+
+		Intent intent = getIntent();
+		_grainGUID = intent.getStringExtra( GrainDatabase.GUID );
 
 		initializeWidgets();
     }
@@ -47,6 +51,14 @@ public class EditGrain extends Activity {
 		_originInput = (EditText)findViewById( R.id.edit_grain_origin );
 		_potentialInput = (EditText)findViewById( R.id.edit_grain_potential );
 		_srmInput = (EditText)findViewById( R.id.edit_grain_srm );
+
+		if ( null != _grainGUID ) {
+			GrainModel model = GrainDatabase.instance(this).getGrain( _grainGUID );
+			_nameInput.setText( model.getName() );
+			_originInput.setText( model.getOrigin() );
+			_potentialInput.setText( ""+ model.getPotential() );
+			_srmInput.setText( ""+ model.getSRM() );
+		}
 
 		// TODO: set initial values based on existing grain (if edit)
 
@@ -71,17 +83,25 @@ public class EditGrain extends Activity {
 		double srm = Double.parseDouble( _srmInput.getText().toString() );
 		double potential = Double.parseDouble( _potentialInput.getText().toString() );
 
+		String guid = _grainGUID;
+		if ( null == _grainGUID ) {
+			guid = UUID.randomUUID().toString();
+		}
+
 		GrainModel grain = new GrainModel(
-				UUID.randomUUID().toString(),
+				guid,
 				_nameInput.getText().toString(),
 				_originInput.getText().toString(),
 				srm,
 				potential );
 
-		db.insert( grain );
+		if ( null == _grainGUID ) {
+			db.insert( grain );
+		} else {
+			db.update( grain );
+		}
 
 		// TODO: validate
-		// TODO: submit values (depending on caller's intent)
 		setResult( RESULT_OK, new Intent() );
 		finish();
 	}
