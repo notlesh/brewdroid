@@ -4,6 +4,7 @@
 package sas.bd;
 
 import sas.bd.objects.*;
+import sas.bd.persistence.*;
 
 import java.text.*;
 import java.util.*;
@@ -147,7 +148,7 @@ public class GrainList extends ListActivity {
 		switch ( item.getItemId() ) {
 			case EDIT_GRAIN:
 				Intent intent = new Intent( this, EditGrain.class );
-				intent.putExtra( GrainDatabase.GUID, id );
+				intent.putExtra( DatabaseUtil.GUID, id );
 				startActivityForResult( intent, NEW_GRAIN_REQUEST );
 				break;
 			case DELETE_GRAIN:

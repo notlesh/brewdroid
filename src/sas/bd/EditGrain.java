@@ -4,6 +4,7 @@
 package sas.bd;
 
 import sas.bd.objects.*;
+import sas.bd.persistence.*;
 
 import java.text.*;
 import java.util.*;
@@ -37,7 +38,7 @@ public class EditGrain extends Activity {
         setContentView( R.layout.edit_grain );
 
 		Intent intent = getIntent();
-		_grainGUID = intent.getStringExtra( GrainDatabase.GUID );
+		_grainGUID = intent.getStringExtra( DatabaseUtil.GUID );
 
 		initializeWidgets();
     }
@@ -53,7 +54,7 @@ public class EditGrain extends Activity {
 		_srmInput = (EditText)findViewById( R.id.edit_grain_srm );
 
 		if ( null != _grainGUID ) {
-			GrainModel model = GrainDatabase.instance(this).getGrain( _grainGUID );
+			GrainModel model = GrainDatabase.instance(this).get( _grainGUID );
 			_nameInput.setText( model.getName() );
 			_originInput.setText( model.getOrigin() );
 			_potentialInput.setText( ""+ model.getPotential() );

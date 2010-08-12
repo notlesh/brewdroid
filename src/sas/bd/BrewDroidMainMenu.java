@@ -60,5 +60,15 @@ public class BrewDroidMainMenu extends Activity {
 			}
 		});
 
+		final Button recipesButton = (Button)findViewById(R.id.recipes_button);
+		recipesButton.setOnClickListener( new View.OnClickListener() {
+			public void onClick( View v ) {
+				Intent intent = new Intent( 
+						BrewDroidMainMenu.this,
+						RecipeTabs.class );
+				BrewDroidMainMenu.this.startActivity( intent );
+			}
+		});
+
 	}
 }

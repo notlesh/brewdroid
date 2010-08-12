@@ -3,6 +3,8 @@
  */
 package sas.bd.objects;
 
+import sas.bd.persistence.*;
+
 import java.text.*;
 import java.util.*;
 
@@ -16,7 +18,7 @@ import android.os.Bundle;
 /**
  * Grain Model class
  */
-public class GrainModel {
+public class GrainModel implements Persistable {
 
 	// Member Variables
 	protected String _guid;
@@ -76,5 +78,66 @@ public class GrainModel {
 	 */
 	public String toString() {
 		return _name;
+	}
+
+	/**
+	 * Returns all fields
+	 */
+	@Override
+	public String[] getDatabaseFields() {
+		return new String[] {
+			_guid,
+			_name,
+			_origin,
+			""+ _srm,
+			""+ _potential
+		};
+	}
+
+	/**
+	 * Inflator
+	 */
+	public static class Inflator implements PersistableInflator<GrainModel> {
+
+		/**
+		 * Should return a new instance of an object from the given fields
+		 */
+		@Override
+		public GrainModel inflate( String[] fields ) {
+			assert (fields.length == 5) :
+					"GrainModel requires 5 fields, but got "+ fields.length;
+
+			return new GrainModel(
+				fields[0],
+				fields[1],
+				fields[2],
+				Double.parseDouble( fields[3] ),
+				Double.parseDouble( fields[4] ));
+		}
+
+		/**
+		 * Should return a list of all (non-standard) fields
+		 */
+		@Override
+		public String[] getAllFields() {
+			return GrainDatabase.ALL_FIELDS;
+		}
+
+		/**
+		 * Returns the version of the current schema
+		 */
+		@Override
+		public int getVersion() {
+			return 1;
+		}
+
+		/**
+		 * Should return the database name
+		 */
+		@Override
+		public String getTableName() {
+			return GrainDatabase.TABLE_NAME;
+		}
+
 	}
 }

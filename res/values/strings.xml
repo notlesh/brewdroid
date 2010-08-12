@@ -15,6 +15,10 @@
 				<string name="delete">Delete</string>
 				<string name="edit">Edit</string>
 				<string name="removed">Removed %1$s</string>
+				<string name="style">Style</string>
+				<string name="grain">Grain</string>
+				<string name="hops">Hops</string>
+				<string name="recipes">Recipes</string>
 
 				<!-- Attenuation Calculator Strings -->
 				<string name="attenuation_calculator_abvw_label">Alcohol by Volume/Weight:</string>

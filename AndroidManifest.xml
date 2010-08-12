@@ -18,5 +18,9 @@
         <activity android:name=".GrainList" android:label="@string/grain_list"/>
         <activity android:name=".EditGrain" android:label="@string/edit_grain"/>
 
+								<!-- recipe related -->
+        <activity android:name=".RecipeTabs" android:label="@string/recipes"/>
+        <activity android:name=".RecipeStyle" android:label="@string/style"/>
+
     </application>
 </manifest> 
