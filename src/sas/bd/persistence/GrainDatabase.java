@@ -35,7 +35,7 @@ public class GrainDatabase extends ObjectDatabase<GrainModel> {
 	public static final String POTENTIAL = "potential";
 
 	public static final String[] ALL_FIELDS = new String[] {
-		GUID, NAME, ORIGIN, SRM, POTENTIAL
+		NAME, ORIGIN, SRM, POTENTIAL
 	};
 
 	/**

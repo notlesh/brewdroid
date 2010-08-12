@@ -28,6 +28,7 @@ public class EditGrain extends Activity {
 	protected EditText _potentialInput;
 	protected EditText _srmInput;
 	protected String _grainGUID;
+	protected GrainModel _grain;
 
     /** 
 	 * Called when the activity is first created. 
@@ -54,11 +55,11 @@ public class EditGrain extends Activity {
 		_srmInput = (EditText)findViewById( R.id.edit_grain_srm );
 
 		if ( null != _grainGUID ) {
-			GrainModel model = GrainDatabase.instance(this).get( _grainGUID );
-			_nameInput.setText( model.getName() );
-			_originInput.setText( model.getOrigin() );
-			_potentialInput.setText( ""+ model.getPotential() );
-			_srmInput.setText( ""+ model.getSRM() );
+			_grain = GrainDatabase.instance(this).get( _grainGUID );
+			_nameInput.setText( _grain.getName() );
+			_originInput.setText( _grain.getOrigin() );
+			_potentialInput.setText( ""+ _grain.getPotential() );
+			_srmInput.setText( ""+ _grain.getSRM() );
 		}
 
 		// TODO: set initial values based on existing grain (if edit)
@@ -79,28 +80,30 @@ public class EditGrain extends Activity {
 	 */
 	private void submit() {
 
-		GrainDatabase db = GrainDatabase.instance( this );
-
 		double srm = Double.parseDouble( _srmInput.getText().toString() );
 		double potential = Double.parseDouble( _potentialInput.getText().toString() );
 
 		String guid = _grainGUID;
 		if ( null == _grainGUID ) {
 			guid = UUID.randomUUID().toString();
-		}
 
-		GrainModel grain = new GrainModel(
-				guid,
-				_nameInput.getText().toString(),
-				_originInput.getText().toString(),
-				srm,
-				potential );
-
-		if ( null == _grainGUID ) {
-			db.insert( grain );
+			_grain = new GrainModel(
+					guid,
+					1l,
+					_nameInput.getText().toString(),
+					_originInput.getText().toString(),
+					srm,
+					potential );
 		} else {
-			db.update( grain );
+
+			_grain.incrementSerial();
+			_grain.setName( _nameInput.getText().toString() );
+			_grain.setOrigin( _originInput.getText().toString() );
+			_grain.setSRM( srm );
+			_grain.setPotential( potential );
 		}
+
+		Marshaller.instance(this).save( _grain );
 
 		// TODO: validate
 		setResult( RESULT_OK, new Intent() );

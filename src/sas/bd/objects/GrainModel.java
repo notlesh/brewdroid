@@ -22,6 +22,8 @@ public class GrainModel implements Persistable {
 
 	// Member Variables
 	protected String _guid;
+	protected long _serial;
+
 	protected String _name;
 	protected String _origin;
 	protected double _potential;
@@ -30,19 +32,13 @@ public class GrainModel implements Persistable {
 	/**
 	 * Constructor
 	 */
-	public GrainModel( String guid, String name, String origin, double srm, double potential ) {
+	public GrainModel( String guid, long serial, String name, String origin, double srm, double potential ) {
 		_guid = guid;
+		_serial = serial;
 		_name = name;
 		_origin = origin;
 		_srm = srm;
 		_potential = potential;
-	}
-
-	/**
-	 * Returns the guid for this model
-	 */
-	public String getGUID() {
-		return _guid;
 	}
 
 	/**
@@ -53,10 +49,24 @@ public class GrainModel implements Persistable {
 	}
 
 	/**
+	 * Sets the name
+	 */
+	public void setName( String name ) {
+		_name = name;
+	}
+
+	/**
 	 * Returns the origin
 	 */
 	public String getOrigin() {
 		return _origin;
+	}
+
+	/**
+	 * Sets the origin
+	 */
+	public void setOrigin( String origin ) {
+		_origin = origin;
 	}
 
 	/**
@@ -67,10 +77,24 @@ public class GrainModel implements Persistable {
 	}
 
 	/**
+	 * Sets the potential
+	 */
+	public void setPotential( double potential ) {
+		_potential = potential;
+	}
+
+	/**
 	 * Returns the srm
 	 */
 	public double getSRM() {
 		return _srm;
+	}
+
+	/**
+	 * Sets the SRM 
+	 */
+	public void setSRM( double srm ) {
+		_srm = srm;
 	}
 
 	/**
@@ -81,17 +105,48 @@ public class GrainModel implements Persistable {
 	}
 
 	/**
+	 * Returns the GUID for this object
+	 */
+	@Override
+	public String getGUID() {
+		return _guid;
+	}
+
+	/**
+	 * Returns the serial of this persistable.
+	 */
+	@Override
+	public long getSerial() {
+		return _serial;
+	}
+
+	/**
+	 * Increments the serial
+	 */
+	@Override
+	public void incrementSerial() {
+		_serial++;
+	}
+
+	/**
 	 * Returns all fields
 	 */
 	@Override
 	public String[] getDatabaseFields() {
 		return new String[] {
-			_guid,
 			_name,
 			_origin,
 			""+ _srm,
 			""+ _potential
 		};
+	}
+
+	/**
+	 * Returns children (none)
+	 */
+	@Override
+	public List<Persistable> getChildPersistables() {
+		return null;
 	}
 
 	/**
@@ -103,16 +158,17 @@ public class GrainModel implements Persistable {
 		 * Should return a new instance of an object from the given fields
 		 */
 		@Override
-		public GrainModel inflate( String[] fields ) {
-			assert (fields.length == 5) :
-					"GrainModel requires 5 fields, but got "+ fields.length;
+		public GrainModel inflate( String guid, long serial, String[] fields ) {
+			assert (fields.length == GrainDatabase.ALL_FIELDS.length) :
+					"GrainModel requires 4 fields, but got "+ fields.length;
 
 			return new GrainModel(
+				guid,
+				serial,
 				fields[0],
 				fields[1],
-				fields[2],
-				Double.parseDouble( fields[3] ),
-				Double.parseDouble( fields[4] ));
+				Double.parseDouble( fields[2] ),
+				Double.parseDouble( fields[3] ));
 		}
 
 		/**

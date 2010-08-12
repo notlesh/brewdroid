@@ -16,7 +16,7 @@ public interface PersistableInflator<T extends Persistable> {
 	/**
 	 * Should return a new instance of an object from the given fields
 	 */
-	public T inflate( String[] fields );
+	public T inflate( String guid, long serial, String[] fields );
 
 	/**
 	 * Should return a list of all (non-standard) fields

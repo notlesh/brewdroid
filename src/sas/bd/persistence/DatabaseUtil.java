@@ -24,7 +24,9 @@ public class DatabaseUtil {
 
 	// well known fields
 	public static final String DATABASE_NAME = "BrewDroid";
+	public static final int DATABASE_VERSION = 1;
 	public static final String GUID = "_id";
+	public static final String SERIAL = "_srl";
 
 	/**
 	 * Generates a SQL statement to create a table with the given fields
@@ -132,6 +134,21 @@ public class DatabaseUtil {
 	public static String generateDeleteStatement( String tableName ) {
 		StringBuffer buffer = new StringBuffer( tableName.length() + 35 );
 		buffer.append( "DELETE FROM " )
+		      .append( tableName )
+			  .append( " WHERE " )
+			  .append( GUID )
+			  .append( "=?;" );
+		return buffer.toString();
+	}
+
+	/**
+	 * Generate a SQL statement to return a single field
+	 */
+	public static String generateSelect( String tableName, String field ) {
+		StringBuffer buffer = new StringBuffer( 64 );
+		buffer.append( "SELECT " )
+		      .append( field )
+			  .append( " FROM " )
 		      .append( tableName )
 			  .append( " WHERE " )
 			  .append( GUID )
